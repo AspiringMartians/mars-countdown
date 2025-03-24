@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mars Countdown</title>
+  <link href="https://fonts.googleapis.com/css2?family=Basic&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      font-family: 'Basic', sans-serif;
+      font-size: 20px;
+      font-weight: bold;
+      line-height: 1.2;
+      color: #fff;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    #countdown {
+      display: inline-block;
+      padding: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div id="countdown"></div>
+
+  <script>
+    const targetDate = new Date("2033-11-28T00:00:00Z");
+
+    function getTimeParts(from, to) {
+      let years = to.getFullYear() - from.getFullYear();
+      let months = to.getMonth() - from.getMonth();
+      let days = to.getDate() - from.getDate();
+
+      if (days < 0) {
+        months -= 1;
+        const prevMonth = new Date(to.getFullYear(), to.getMonth(), 0);
+        days += prevMonth.getDate();
+      }
+
+      if (months < 0) {
+        years -= 1;
+        months += 12;
+      }
+
+      return { years, months, days };
+    }
+
+    function updateCountdown() {
+      const now = new Date();
+      if (now >= targetDate) {
+        document.getElementById("countdown").innerText = "0 Years 0 Months 0 Days";
+        return;
+      }
+
+      const { years, months, days } = getTimeParts(now, targetDate);
+      document.getElementById("countdown").innerText =
+        `${years} Year${years !== 1 ? 's' : ''} ` +
+        `${months} Month${months !== 1 ? 's' : ''} ` +
+        `${days} Day${days !== 1 ? 's' : ''}`;
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 3600000);
+  </script>
+</body>
+</html>
